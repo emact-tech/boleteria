@@ -1,5 +1,5 @@
 // Configuración de Supabase
-const SUPABASE_URL = 'https://tu-proyecto.supabase.co'; // Reemplaza con tu URL
+const SUPABASE_URL = 'https://ktwgpjxmlkazwbmpjfxo.supabase.coo'; // Reemplaza con tu URL
 const SUPABASE_ANON_KEY = 'tu-clave-anon-publica'; // Reemplaza con tu clave anónima
 
 // Crear cliente de Supabase
