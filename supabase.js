@@ -1,6 +1,6 @@
 // Configuración de Supabase
-const SUPABASE_URL = 'https://ktwgpjxmlkazwbmpjfxo.supabase.coo'; // Reemplaza con tu URL
-const SUPABASE_ANON_KEY = 'tu-clave-anon-publica'; // Reemplaza con tu clave anónima
+const SUPABASE_URL = 'https://ktwgpjxmlkazwbmpjfxo.supabase.co'; // Reemplaza con tu URL
+const SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt0d2dwanhtbGthendibXBqZnhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwNTY5MjEsImV4cCI6MjA3MzYzMjkyMX0.9AkiUrrr8oJuq2Dwa1PlUSAwJqf4orTyyzgmkW0kQic'; // Reemplaza con tu clave anónima
 
 // Crear cliente de Supabase
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
