@@ -187,4 +187,3 @@ document.addEventListener('DOMContentLoaded', function() {
         historialModal.show();
     });
 });
-            historialBody.innerHTML = '<tr
