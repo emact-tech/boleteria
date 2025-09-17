@@ -10,6 +10,14 @@ window.supabaseClient = supabase;
 
 // Función para mostrar alertas
 function showAlert(message, type = 'success') {
+    // Crear contenedor de alertas si no existe
+    if (!document.getElementById('alertContainer')) {
+        const alertContainer = document.createElement('div');
+        alertContainer.id = 'alertContainer';
+        alertContainer.className = 'alert-container';
+        document.body.appendChild(alertContainer);
+    }
+    
     const alertContainer = document.getElementById('alertContainer');
     const alertId = 'alert-' + Date.now();
     
