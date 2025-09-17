@@ -5,6 +5,29 @@ const SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 // Crear cliente de Supabase
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Función para verificar la conexión con Supabase
+async function verificarConexion() {
+    try {
+        const { data, error } = await supabase
+            .from('boletas')
+            .select('count')
+            .limit(1);
+            
+        if (error) {
+            console.error('Error de conexión con Supabase:', error);
+            showAlert('Error de conexión con la base de datos: ' + error.message, 'danger');
+            return false;
+        }
+        
+        console.log('Conexión con Supabase establecida correctamente');
+        return true;
+    } catch (error) {
+        console.error('Error inesperado al conectar con Supabase:', error);
+        showAlert('Error inesperado de conexión con la base de datos', 'danger');
+        return false;
+    }
+}
+
 // Exportar para usar en otros archivos
 window.supabaseClient = supabase;
 
