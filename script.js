@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Generar código de verificación único
+        const codigoVerificacion = 'TD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+        
         const boletaData = {
             obra: obra,
             cliente: cliente,
@@ -74,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fecha_funcion: fechaHora,
             tipo_entrada: 'General',
             precio: 40000,
-            codigo_verificacion: 'TD-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+            codigo_verificacion: codigoVerificacion
         };
         
         const resultado = await window.supabaseFunctions.guardarBoleta(boletaData);
@@ -84,25 +87,39 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('previewId').textContent = resultado.codigo_verificacion;
             document.getElementById('previewCodigo').textContent = resultado.codigo_verificacion;
             
+            window.supabaseFunctions.showAlert('Boleta guardada exitosamente con código: ' + resultado.codigo_verificacion, 'success');
+            
             // Limpiar formulario
             document.getElementById('cliente').value = '';
             document.getElementById('telCliente').value = '';
             document.getElementById('fila').value = '';
             document.getElementById('silla').value = '';
+            
+            // Limpiar selección de asientos
+            document.querySelectorAll('.seat.selected').forEach(seat => {
+                seat.classList.remove('selected');
+            });
         }
     });
     
     // Simular funcionalidades de botones
     document.getElementById('downloadPDF').addEventListener('click', function() {
-        window.supabaseFunctions.showAlert('Funcionalidad de descarga de PDF en desarrollo', 'info');
+        const codigo = document.getElementById('previewCodigo').textContent;
+        if (codigo && codigo !== 'TD-00001234') {
+            window.supabaseFunctions.showAlert('Descargando PDF para código: ' + codigo, 'info');
+        } else {
+            window.supabaseFunctions.showAlert('Primero genere y guarde una boleta para descargar', 'warning');
+        }
     });
     
     document.getElementById('sendEmail').addEventListener('click', function() {
         const telCliente = document.getElementById('telCliente').value;
-        if (telCliente) {
-            window.supabaseFunctions.showAlert(`Simulación: Boleta enviada al cliente con teléfono: ${telCliente}`, 'info');
+        const codigo = document.getElementById('previewCodigo').textContent;
+        
+        if (telCliente && codigo && codigo !== 'TD-00001234') {
+            window.supabaseFunctions.showAlert(`Enviando boleta ${codigo} al cliente con teléfono: ${telCliente}`, 'info');
         } else {
-            window.supabaseFunctions.showAlert('Por favor, ingresa el teléfono del cliente primero', 'warning');
+            window.supabaseFunctions.showAlert('Complete los datos y guarde la boleta primero', 'warning');
         }
     });
     
@@ -147,4 +164,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const historialBody = document.getElementById('historialBody');
         
         if (boletas.length === 0) {
+            historialBody.innerHTML = '<tr><td colspan="6" class="text-center">No hay boletas registradas</td></tr>';
+        } else {
+            historialBody.innerHTML = boletas.map(boleta => `
+                <tr>
+                    <td>${boleta.codigo_verificacion}</td>
+                    <td>${boleta.cliente}</td>
+                    <td>${boleta.obra}</td>
+                    <td>${boleta.fila}/${boleta.silla}</td>
+                    <td>${new Date(boleta.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary ver-boleta" data-id="${boleta.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Mostrar modal
+        const historialModal = new bootstrap.Modal(document.getElementById('historialModal'));
+        historialModal.show();
+    });
+});
             historialBody.innerHTML = '<tr
